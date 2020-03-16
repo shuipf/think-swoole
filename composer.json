@@ -1,0 +1,44 @@
+{
+    "name": "shuipf/think-swoole",
+    "description": "是基于官方think-swoole扩展修改而来",
+    "authors": [
+        {
+            "name": "水平凡",
+            "email": "admin@shuipf.com"
+        }
+    ],
+    "type": "library",
+    "license": "Apache-2.0",
+    "require": {
+        "ext-json": "*",
+        "php": ">7.1",
+        "ext-swoole": ">=4.4.8",
+        "topthink/framework": "^6.0",
+        "topthink/think-helper": "^3.0.4",
+        "symfony/finder": "^4.3.2",
+        "nette/php-generator": "^3.2",
+        "open-smf/connection-pool": "~1.0"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^4.3",
+        "swoole/ide-helper": "^4.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "think\\swoole\\": "src"
+        }
+    },
+    "extra": {
+        "think": {
+            "services": [
+                "think\\swoole\\Service"
+            ]
+        }
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        }
+    }
+}

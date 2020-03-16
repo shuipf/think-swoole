@@ -1,7 +1,209 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1278c75c-5dad-45b9-8d2e-1bc1b77af6b9" name="默认更改列表" comment="" />
+    <list default="true" id="1278c75c-5dad-45b9-8d2e-1bc1b77af6b9" name="默认更改列表" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.en.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/autoload.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/bin/var-dump-server" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/ClassLoader.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_files.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_namespaces.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_psr4.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_real.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/installed.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/.php_cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/.scrutinizer.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/.travis.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/clover/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/composer.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/phpspec.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/phpunit.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/phpunit.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/readme.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/spec/CachedAdapterSpec.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/src/CacheInterface.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/src/CachedAdapter.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/src/Storage/AbstractCache.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/src/Storage/Adapter.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/src/Storage/Memcached.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/src/Storage/Memory.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/src/Storage/Noop.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/src/Storage/PhpRedis.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/src/Storage/Predis.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/src/Storage/Psr6Cache.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/src/Storage/Stash.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/tests/AdapterCacheTests.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/tests/InspectionTests.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/tests/MemcachedTests.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/tests/MemoryCacheTests.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/tests/NoopCacheTests.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/tests/PhpRedisTests.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/tests/PredisTests.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/tests/Psr6CacheTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/league/flysystem-cached-adapter/tests/StashTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/composer.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/examples/coroutine-mysql.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/examples/coroutine-postgresql.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/examples/coroutine-redis.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/examples/coroutine-runtime-phpredis.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/examples/dynamic-testing.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/examples/http-server.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/src/BorrowConnectionTimeoutException.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/src/ConnectionPool.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/src/ConnectionPoolInterface.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/src/ConnectionPoolTrait.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/src/Connectors/ConnectorInterface.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/src/Connectors/CoroutineMySQLConnector.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/src/Connectors/CoroutinePostgreSQLConnector.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/src/Connectors/CoroutineRedisConnector.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/open-smf/connection-pool/src/Connectors/PhpRedisConnector.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/.travis.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/bin/generator.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/bin/generator.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/composer.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/config/chinese/server/method/send.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/aliases.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/constants.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/functions.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Atomic.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Atomic/Long.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Buffer.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Client.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Connection/Iterator.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Channel.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Client.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Context.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Http/Client.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Http/Client/Exception.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Http/Server.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Http2/Client.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Http2/Client/Exception.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Iterator.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/MySQL.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/MySQL/Exception.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/MySQL/Statement.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Redis.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Scheduler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Socket.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/Socket/Exception.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Coroutine/System.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Error.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Event.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Exception.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/ExitException.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Http/Request.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Http/Response.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Http/Server.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Http2/Request.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Http2/Response.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Lock.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Process.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Process/Pool.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Redis/Server.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Runtime.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Server.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Server/Port.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Server/Task.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Table/Row.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Timer.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/Timer/Iterator.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/WebSocket/CloseFrame.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/WebSocket/Frame.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole/namespace/WebSocket/Server.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/aliases.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/functions.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/Async.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/Async/Client.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/Async/http/client.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/Async/mysql.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/Async/redis.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/Channel.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/Http/Client.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/Memory/Pool.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/Memory/Pool/Slice.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/Mmap.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/MsgQueue.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/MySQL.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/MySQL/Exception.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/Redis.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_async/namespace/RingQueue.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/alias.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/alias_ns.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/ArrayObject.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/ConnectionPool.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Constant.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Coroutine/Server.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Coroutine/Server/Connection.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Coroutine/WaitGroup.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Curl/Exception.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Curl/Handler.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Database/MysqliConfig.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Database/MysqliException.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Database/MysqliPool.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Database/MysqliProxy.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Database/MysqliStatementProxy.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Database/PDOConfig.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Database/PDOPool.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Database/PDOProxy.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Database/PDOStatementProxy.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Database/RedisConfig.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Database/RedisPool.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/Http/Status.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/MultibyteStringObject.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/ObjectProxy.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_library/src/core/StringObject.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_orm/aliases.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_orm/functions.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_postgresql/aliases.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_postgresql/constants.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_postgresql/namespace/Coroutine/PostgreSQL.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_serialize/aliases.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_serialize/constants.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_serialize/namespace/Serialize.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_zookeeper/aliases.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_zookeeper/constants.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/output/swoole_zookeeper/namespace/zookeeper.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/src/AbstractStubGenerator.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/src/Constant.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/src/Exception.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/src/Rules/AbstractRule.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/src/Rules/NamespaceRule.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/src/StubGenerators/Swoole.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/src/StubGenerators/SwooleAsync.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/src/StubGenerators/SwooleLib.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/src/StubGenerators/SwooleOrm.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/src/StubGenerators/SwoolePostgresql.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/src/StubGenerators/SwooleSerialize.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/swoole/ide-helper/src/StubGenerators/SwooleZookeeper.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/topthink/think-helper/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/topthink/think-helper/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/topthink/think-helper/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/topthink/think-helper/composer.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/topthink/think-helper/src/Collection.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/topthink/think-helper/src/contract/Arrayable.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/topthink/think-helper/src/contract/Jsonable.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/topthink/think-helper/src/helper.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/topthink/think-helper/src/helper/Arr.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/topthink/think-helper/src/helper/Str.php" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,6 +254,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
   </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -63,7 +270,7 @@
       <option name="presentableId" value="Default" />
       <updated>1584343981590</updated>
       <workItem from="1584343982786" duration="5000" />
-      <workItem from="1584343997409" duration="516000" />
+      <workItem from="1584343997409" duration="955000" />
     </task>
     <servers />
   </component>
@@ -75,5 +282,9 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="221" y="100" key="SettingsEditor/0.-1057.1920.1057/0.23.1440.877@0.23.1440.877" timestamp="1584344234837" />
+    <state x="386" y="213" width="667" height="496" key="find.popup" timestamp="1584344530559">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="386" y="213" width="667" height="496" key="find.popup/0.-1057.1920.1057/0.23.1440.877@0.23.1440.877" timestamp="1584344530559" />
   </component>
 </project>

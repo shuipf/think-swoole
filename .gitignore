@@ -1,0 +1,12 @@
+*.project
+*.buildpath
+.settings
+.tags
+.tags_sorted_by_file
+%SystemDrive%
+*.DS_Store
+*.vscode
+/vendor
+/.idea
+composer.phar
+composer.lock

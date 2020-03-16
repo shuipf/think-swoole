@@ -1,37 +1,22 @@
-# think-swoole
+## shuipf/think-swoole
 
-#### 介绍
-改进官方think-swoole扩展，学习目的
-
-#### 软件架构
-软件架构说明
+shuipf/think-swoole 是基于官方think-swoole扩展修改而来。
 
 
-#### 安装教程
+## 开始使用
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+[Swoole手册](https://wiki.swoole.com/)
 
-#### 使用说明
+[项目地址](https://gitee.com/shuipf/think-swoole)
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+[ThinkPHP6完整手册](https://www.kancloud.cn/manual/thinkphp6_0/1037479)
 
-#### 参与贡献
+[Swoole进程关系](https://blog.csdn.net/t2337025/article/details/90042462)
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+## 运行环境
 
-
-#### 码云特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5.  码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+- Linux 系统 (Swoole 不支持在 Windows 上运行)
+- [PHP](https://php.net/) >= 7.1
+- [Composer](https://getcomposer.org/)
+- [Swoole](https://www.swoole.com/) >= 4.3.0
+- Redis、PDO 扩展
