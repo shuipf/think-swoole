@@ -24,9 +24,9 @@ return [
         //Http Server 参数
         'options' => [
             //master进程的PID
-            'pid_file' => runtime_path() . 'swoole.pid',
+            'pid_file' => App::getRuntimePath() . 'swoole.pid',
             //指定swoole错误日志文件
-            'log_file' => runtime_path() . 'swoole.log',
+            'log_file' => App::getRuntimePath() . 'swoole.log',
             //守护进程化
             'daemonize' => false,
             //通常，根据您的cpu核心，此值应该是1到4倍

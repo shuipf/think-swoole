@@ -113,7 +113,7 @@ class Sandbox
     }
 
     /**
-     * 获取
+     * 获取当前app对象（非沙箱内）
      * @return App
      */
     public function getBaseApp()
@@ -150,12 +150,15 @@ class Sandbox
         if (!is_null($fd)) {
             Context::setData('_fd', $fd);
         }
-        $this->setInstance($app = $this->getApplication());
+        $app = $this->getApplication();
+        //设置app相关实例对象
+        $this->setInstance($app);
+        //重置应用
         $this->resetApp($app);
     }
 
     /**
-     * 获取应用对象
+     * 获取应用对象（沙箱克隆方式）
      * @return mixed|App|null
      */
     public function getApplication()
@@ -215,13 +218,15 @@ class Sandbox
     {
         $app->instance('app', $app);
         $app->instance(Container::class, $app);
-
-        $reflectObject   = new ReflectionObject($app);
+        //通过反射的方式获取注册的系统服务
+        $reflectObject = new ReflectionObject($app);
         $reflectProperty = $reflectObject->getProperty('services');
         $reflectProperty->setAccessible(true);
         $services = $reflectProperty->getValue($app);
+        //遍历所有的服务，重新绑定app对象为当前快照的$app对象
         foreach ($services as $service) {
-            $this->modifyProperty($service, $app);
+            //设置受保护的app对象属性
+            $this->modifyProperty($service, $app, 'app');
         }
     }
 

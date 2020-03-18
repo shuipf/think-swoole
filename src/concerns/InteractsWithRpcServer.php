@@ -25,19 +25,24 @@ use think\swoole\RpcManager;
 trait InteractsWithRpcServer
 {
     /**
+     * rpc服务启动
      * @return void
      */
     protected function prepareRpcServer()
     {
-        if ($this->getConfig('rpc.server.enable', false)) {
-            $host = $this->getConfig('server.host');
-            $port = $this->getConfig('rpc.server.port', 9000);
-            $rpcServer = $this->getServer()->addlistener($host, $port, SWOOLE_SOCK_TCP);
-            /**
-             * @var RpcManager $rpcManager
-             */
-            $rpcManager = $this->container->make(RpcManager::class);
-            $rpcManager->attachToServer($rpcServer);
+        //是否开启rpc服务端
+        if (!$this->getConfig('rpc.server.enable', false)) {
+            return;
         }
+        $host = $this->getConfig('server.host');
+        $port = $this->getConfig('rpc.server.port', 9000);
+        //增加rpc监听的端口服务
+        $rpcServer = $this->getServer()->addlistener($host, $port, SWOOLE_SOCK_TCP);
+        /**
+         * rpc服务
+         * @var RpcManager $rpcManager
+         */
+        $rpcManager = $this->container->make(RpcManager::class);
+        $rpcManager->attachToServer($rpcServer);
     }
 }

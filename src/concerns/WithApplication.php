@@ -88,12 +88,16 @@ trait WithApplication
 
     /**
      * 应用准备
+     * 在 Worker 进程 /Task 进程 都会进行初始化
+     * 在这些进程神马周期里，$this->app 对象是同一个，且和命令行下启动的app对象不是同一个，这个是新启动，一直到进程结束
      * @return void
      */
     protected function prepareApplication()
     {
         if (!$this->app instanceof SwooleApp) {
+            //实例化app对象
             $this->app = new SwooleApp($this->container->getRootPath());
+            //绑定对象
             $this->app->bind(SwooleApp::class, App::class);
             $this->app->bind(Server::class, $this->getServer());
             $this->app->bind("swoole.server", Server::class);
@@ -104,6 +108,7 @@ trait WithApplication
             if ($this->getConfig('pool.cache.enable', true)) {
                 $this->app->bind('cache', Cache::class);
             }
+            //初始化应用
             $this->app->initialize();
             $this->prepareConcretes();
         }

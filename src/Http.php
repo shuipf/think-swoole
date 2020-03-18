@@ -44,16 +44,17 @@ class Http extends \think\Http
         if (!isset(self::$middleware)) {
             parent::loadMiddleware();
             self::$middleware = clone $this->app->middleware;
-            $this->modifyProperty(self::$middleware, null);
+            $this->modifyProperty(self::$middleware, null, 'app');
         }
 
         $middleware = clone self::$middleware;
-        $this->modifyProperty($middleware, $this->app);
+        $this->modifyProperty($middleware, $this->app, 'app');
         $this->app->instance("middleware", $middleware);
     }
 
     /**
      * 加载路由
+     * 会缓存路由对象，每次请求都使用同一个路由对象
      * @throws \ReflectionException
      */
     protected function loadRoutes(): void
@@ -62,7 +63,7 @@ class Http extends \think\Http
             parent::loadRoutes();
             self::$route = clone $this->app->route;
             //清理路由对象里的app对象
-            $this->modifyProperty(self::$route, null);
+            $this->modifyProperty(self::$route, null, 'app');
             //清理路由对象里的request对象
             $this->modifyProperty(self::$route, null, 'request');
         }
@@ -76,9 +77,11 @@ class Http extends \think\Http
      */
     protected function dispatchToRoute($request)
     {
+        //如果路由对象已经初始化
         if (isset(self::$route)) {
+            //重新克隆一个路由对象
             $newRoute = clone self::$route;
-            $this->modifyProperty($newRoute, $this->app);
+            $this->modifyProperty($newRoute, $this->app, 'app');
             $this->app->instance("route", $newRoute);
         }
         return parent::dispatchToRoute($request);

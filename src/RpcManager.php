@@ -129,11 +129,15 @@ class RpcManager
      */
     public function attachToServer(Port $port)
     {
+        //重置配置
         $port->set([]);
+        //绑定事件回调
         foreach ($this->rpcEvents as $event) {
-            $listener = Str::camel("on_$event");
+            //下划线转驼峰 onStart
+            $listener = Str::camel("on_{$event}");
+            //是否已经有实现没有返回一个闭包处理
             $callback = method_exists($this, $listener) ? [$this, $listener] : function () use ($event) {
-                $this->triggerEvent("rpc." . $event, func_get_args());
+                $this->triggerEvent("rpc.{$event}", func_get_args());
             };
             $port->on($event, $callback);
         }

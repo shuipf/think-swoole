@@ -49,10 +49,15 @@ trait InteractsWithPools
             foreach ($this->getConfig('pool', []) as $name => $config) {
                 //连接池类型
                 $type = Arr::pull($config, 'type');
+                //是否定义type，如果有定义走自定义连接池实现，默认的 db cache 没有走这里
                 if ($type && is_subclass_of($type, ConnectorInterface::class)) {
+                    //实例这个连接池对象
                     $pool = new ConnectionPool(
+                        //连接池配置
                         Pool::pullPoolConfig($config),
+                        //连接器
                         $this->app->make($type),
+                        //连接器配置
                         $config
                     );
                     $pools->add($name, $pool);
@@ -62,6 +67,7 @@ trait InteractsWithPools
             }
         };
         $closePools = function () {
+            //关闭全部连接池
             $this->getPools()->closeAll();
         };
         $this->onEvent('workerStart', $createPools);

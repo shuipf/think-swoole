@@ -5,6 +5,13 @@ shuipf/think-swoole 是基于官方think-swoole扩展修改而来。
 
 ## 开始使用
 
+运行：`php think swoole`
+
+查看帮助：`php think swoole --help`
+
+
+## 相关手册
+
 [Swoole手册](https://wiki.swoole.com/)
 
 [项目地址](https://gitee.com/shuipf/think-swoole)

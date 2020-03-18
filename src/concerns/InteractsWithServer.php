@@ -53,6 +53,7 @@ trait InteractsWithServer
         if ($this->getConfig('hot_update.enable', false)) {
             $this->addHotUpdateProcess();
         }
+        //启动服务
         $this->getServer()->start();
     }
 
@@ -67,35 +68,45 @@ trait InteractsWithServer
 
     /**
      * "onStart" listener.
+     * 启动后在主进程（master）的主线程回调此函数
      */
     public function onStart()
     {
         $this->setProcessName('master process');
+        //记录主进程pid和管理进程的的pid
         $this->pidManager->create($this->getServer()->master_pid, $this->getServer()->manager_pid ?? 0);
+        //触发事件 swoole.start
         $this->triggerEvent("start", func_get_args());
     }
 
     /**
      * The listener of "managerStart" event.
+     * 当管理进程启动时触发此事件
      * @return void
      */
     public function onManagerStart()
     {
         $this->setProcessName('manager process');
+        //触发事件 swoole.managerStart
         $this->triggerEvent("managerStart", func_get_args());
     }
 
     /**
      * "onWorkerStart" listener.
+     * 此事件在 Worker 进程 /Task 进程启动时发生，这里创建的对象可以在进程生命周期内使用
      * @param \Swoole\Http\Server|mixed $server
      * @throws Exception
      */
     public function onWorkerStart($server)
     {
+        //是否开启一键协程
         Runtime::enableCoroutine($this->getConfig('coroutine.enable', true), $this->getConfig('coroutine.flags', SWOOLE_HOOK_ALL));
+
+        //清除apc、op缓存
         $this->clearCache();
 
         $this->setProcessName($server->taskworker ? 'task process' : 'worker process');
+
         $this->prepareApplication();
 
         $this->triggerEvent("workerStart", $this->app);
@@ -103,6 +114,10 @@ trait InteractsWithServer
 
     /**
      * Set onTask listener.
+     * 在 task 进程内被调用
+     * 在 task 进程内被调用
+     * worker 进程可以使用 task 函数向 task_worker 进程投递新的任务
+     * 当前的 Task 进程在调用 onTask 回调函数时会将进程状态切换为忙碌，这时将不再接收新的 Task，当 onTask 函数返回时会将进程状态切换为空闲然后继续接收新的 Task
      * @param mixed $server
      * @param Task $task
      * @param mixed $data
@@ -118,11 +133,21 @@ trait InteractsWithServer
 
     /**
      * Set onShutdown listener.
+     * 此事件在 Server 正常结束时发生
      */
     public function onShutdown()
     {
         $this->triggerEvent('shutdown');
         $this->pidManager->remove();
+    }
+
+    /**
+     * Add process to http server
+     * @param Process $process
+     */
+    public function addProcess(Process $process): void
+    {
+        $this->getServer()->addProcess($process);
     }
 
     /**
@@ -135,12 +160,29 @@ trait InteractsWithServer
     }
 
     /**
-     * Set swoole server listeners.
+     * 日志服务器错误
+     * @param Throwable|Exception $e
+     */
+    public function logServerError(Throwable $e)
+    {
+        /**
+         * @var Handle $handle
+         */
+        $handle = $this->container->make(Handle::class);
+        $handle->renderForConsole(new Output(), $e);
+        $handle->report($e);
+    }
+
+    /**
+     * 注册swoole各种事件回调
+     * @return void
      */
     protected function setSwooleServerListeners()
     {
         foreach ($this->events as $event) {
-            $listener = Str::camel("on_$event");
+            //下划线转驼峰 onStart
+            $listener = Str::camel("on_{$event}");
+            //是否已经有实现没有返回一个闭包处理
             $callback = method_exists($this, $listener) ? [$this, $listener] : function () use ($event) {
                 $this->triggerEvent($event, func_get_args());
             };
@@ -168,15 +210,6 @@ trait InteractsWithServer
                 );
             }, false, 0
         );
-        $this->getServer()->addProcess($process);
-    }
-
-    /**
-     * Add process to http server
-     * @param Process $process
-     */
-    public function addProcess(Process $process): void
-    {
         $this->getServer()->addProcess($process);
     }
 
@@ -209,19 +242,5 @@ trait InteractsWithServer
         $appName = $this->container->config->get('app.name', 'ThinkPHP');
         $name = sprintf('%s: %s for %s', $serverName, $process, $appName);
         swoole_set_process_name($name);
-    }
-
-    /**
-     * 日志服务器错误
-     * @param Throwable|Exception $e
-     */
-    public function logServerError(Throwable $e)
-    {
-        /**
-         * @var Handle $handle
-         */
-        $handle = $this->container->make(Handle::class);
-        $handle->renderForConsole(new Output(), $e);
-        $handle->report($e);
     }
 }

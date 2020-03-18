@@ -15,16 +15,18 @@ use think\swoole\contract\ResetterInterface;
 
 class ClearInstances implements ResetterInterface
 {
+    /**
+     * @param Container $app
+     * @param Sandbox $sandbox
+     * @return Container
+     */
     public function handle(Container $app, Sandbox $sandbox)
     {
         $instances = ['log'];
-
         $instances = array_merge($instances, $sandbox->getConfig()->get('swoole.instances', []));
-
         foreach ($instances as $instance) {
             $app->delete($instance);
         }
-
         return $app;
     }
 }
