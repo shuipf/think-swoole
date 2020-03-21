@@ -14,9 +14,9 @@ return [
     //http服务配置
     'server' => [
         //监听地址
-        'host' => '0.0.0.0',
+        'host' => Env::get('swoole.host', '127.0.0.1'),
         //监听端口
-        'port' => 8050,
+        'port' => Env::get('swoole.port', 8080),
         //运行模式 默认为SWOOLE_PROCESS多进程模式
         'mode' => SWOOLE_PROCESS,
         //sock type 默认为SWOOLE_SOCK_TCP
@@ -62,8 +62,9 @@ return [
     ],
     'rpc' => [
         'server' => [
-            'enable' => true,
-            'port' => 9050,
+            'enable' => Env::get('rpc.enable', false),
+            'host' => Env::get('rpc.host', ''),
+            'port' => Env::get('rpc.port', 9090),
             'services' => [
             ],
         ],
@@ -73,14 +74,14 @@ return [
     //连接池
     'pool' => [
         'db' => [
-            'enable' => true,
+            'enable' => Env::get('pool_db.enable', true),
             'max_active' => Env::get('pool_db.max_active', 10),
-            'max_wait_time' => 1,
+            'max_wait_time' => Env::get('pool_db.max_wait_time', 1),
         ],
         'cache' => [
-            'enable' => true,
+            'enable' => Env::get('pool_cache.enable', true),
             'max_active' => Env::get('pool_cache.max_active', 20),
-            'max_wait_time' => 1,
+            'max_wait_time' => Env::get('pool_cache.max_wait_time', 1),
         ],
     ],
     //协程
