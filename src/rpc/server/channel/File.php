@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | File
+// | File数据类型
 // +----------------------------------------------------------------------
 // | Copyright (c) 2019 http://www.shuipf.com, All rights reserved.
 // +----------------------------------------------------------------------
@@ -12,23 +12,26 @@ namespace think\swoole\rpc\server\channel;
 class File
 {
     /**
+     * 临时文件名
      * @var false|string
      */
     protected $name;
 
     /**
+     * 临时文件句柄
      * @var false|resource
      */
     protected $handle;
 
     /**
-     * @var
+     * 长度
+     * @var int
      */
     protected $length;
 
     /**
      * File constructor.
-     * @param $length
+     * @param int $length 长度
      */
     public function __construct($length)
     {
@@ -38,7 +41,8 @@ class File
     }
 
     /**
-     * @param $data
+     * 写入数据
+     * @param string $data 引用方式传入数据
      * @return \think\swoole\rpc\File
      */
     public function write(&$data)
