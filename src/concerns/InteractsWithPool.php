@@ -61,7 +61,8 @@ trait InteractsWithPool
             if ($connection === false) {
                 throw new RuntimeException(
                     sprintf(
-                        '获取连接超时 %.2f(s), 当前连接池连接数: %d, 全部连接数: %d',
+                        "%s 获取连接超时 %.2f(s), 当前连接池连接数: %d, 全部连接数: %d",
+                        $name,
                         $this->getPoolMaxWaitTime($name),
                         $pool->length(),
                         $this->connectionCount[$name] ?? 0
