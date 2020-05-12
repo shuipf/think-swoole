@@ -5,6 +5,8 @@ shuipf/think-swoole 是基于官方think-swoole扩展修改而来。
 
 ## 开始使用
 
+安装：`composer require shuipf/think-swoole`
+
 运行：`php think swoole`
 
 查看帮助：`php think swoole --help`
