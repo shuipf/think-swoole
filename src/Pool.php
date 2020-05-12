@@ -98,7 +98,7 @@ class Pool
             'maxWaitTime' => Arr::pull($config, 'max_wait_time', 5),
             //最大空闲时间
             'maxIdleTime' => Arr::pull($config, 'max_idle_time', 20),
-            //检查空闲连接的最小间隔
+            //空闲检查间隔时间
             'idleCheckInterval' => Arr::pull($config, 'idle_check_interval', 10),
         ];
     }

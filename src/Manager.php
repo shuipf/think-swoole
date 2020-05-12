@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | Manager swoole http服务管理
+// | Manager
 // +----------------------------------------------------------------------
 // | Copyright (c) 2019 http://www.shuipf.com, All rights reserved.
 // +----------------------------------------------------------------------
@@ -79,11 +79,10 @@ class Manager
         $this->prepareTables();
         //连接池准备
         $this->preparePools();
-        //注册事件回调函数
+        //设置swoole服务的事件监听
         $this->setSwooleServerListeners();
-        //rpc服务端准备
+        //rpc准备
         $this->prepareRpcServer();
-        //rpc客户端准备
         $this->prepareRpcClient();
     }
 
