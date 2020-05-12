@@ -42,6 +42,16 @@ class Db extends \think\Db
     }
 
     /**
+     * 最大活动时间
+     * @param $name
+     * @return int
+     */
+    protected function getPoolMaxUseTime(): int
+    {
+        return $this->config->get('swoole.pool.db.max_use_time', 3600);
+    }
+
+    /**
      * 创建数据库连接实例
      * @access protected
      * @param string|null $name 连接标识
@@ -71,7 +81,19 @@ class Db extends \think\Db
      */
     protected function createPoolConnection(string $name)
     {
+        //创建连接
         return $this->createConnection($name);
+    }
+
+    /**
+     * 移除连接
+     * @param string $name
+     * @param $connection
+     * @return mixed
+     */
+    protected function removePoolConnection(string $name, $connection)
+    {
+        $connection->close();
     }
 
     /**

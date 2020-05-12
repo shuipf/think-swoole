@@ -35,6 +35,16 @@ class Cache extends \think\Cache
     }
 
     /**
+     * 最大活动时间
+     * @param $name
+     * @return int
+     */
+    protected function getPoolMaxUseTime(): int
+    {
+        return $this->app->config->get('swoole.pool.cache.max_use_time', 7200);
+    }
+
+    /**
      * 获取驱动实例
      * @param null|string $name
      * @return mixed
@@ -58,5 +68,16 @@ class Cache extends \think\Cache
     protected function createPoolConnection(string $name)
     {
         return $this->createDriver($name);
+    }
+
+    /**
+     * 移除连接
+     * @param string $name
+     * @param $connection
+     * @return mixed
+     */
+    protected function removePoolConnection(string $name, $connection)
+    {
+
     }
 }

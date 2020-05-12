@@ -1,8 +1,8 @@
 <?php
 // +----------------------------------------------------------------------
-// | InteractsWithPool 连接池接口
+// | InteractsWithPool 连接池接口（db、cache）
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019 http://www.shuipf.com, All rights reserved.
+// | Copyright (c) 2020 http://www.shuipf.com, All rights reserved.
 // +----------------------------------------------------------------------
 // | Author: 水平凡 <admin@abc3210.com>
 // +----------------------------------------------------------------------
@@ -15,7 +15,7 @@ use Swoole\Coroutine\Channel;
 trait InteractsWithPool
 {
     /**
-     * 连接池列表
+     * 连接池列表，常见的cache、db
      * @var Channel[]
      */
     protected $pools = [];
@@ -25,6 +25,12 @@ trait InteractsWithPool
      * @var array
      */
     protected $connectionCount = [];
+
+    /**
+     * 连接创建时间
+     * @var array
+     */
+    protected $connectionCreationTime = [];
 
     /**
      * 获取连接池通道
@@ -54,6 +60,7 @@ trait InteractsWithPool
         if ($pool->isEmpty() && $this->connectionCount[$name] < $this->getPoolMaxActive($name)) {
             //新建链接
             $connection = $this->createPoolConnection($name);
+            $this->connectionCreationTime[$name] = time();
             $this->connectionCount[$name]++;
         } else {
             //从连接池取一个链接
@@ -70,23 +77,57 @@ trait InteractsWithPool
                 );
             }
         }
-        return $this->wrapProxy($pool, $connection);
+        return $this->wrapProxy($pool, $connection, $name);
+    }
+
+    /**
+     * 移除连接
+     * @param $name
+     * @param $connection
+     * @return bool
+     */
+    public function removeConnection($name, $connection): bool
+    {
+        $this->connectionCount[$name]--;
+        go(
+            function () use ($name, $connection) {
+                try {
+                    $this->removePoolConnection($name, $connection);
+                } catch (\Throwable $e) {
+                    //忽略此异常.
+                }
+            }
+        );
+        return true;
     }
 
     /**
      * 代理连接，并增加资源回收
      * @param Channel $pool
      * @param $connection
+     * @param $name
      * @return mixed
      */
-    protected function wrapProxy(Channel $pool, $connection)
+    protected function wrapProxy(Channel $pool, $connection, $name)
     {
-        //手册说明 https://wiki.swoole.com/wiki/page/1015.html
+        //手册说明 https://wiki.swoole.com/#/coroutine/coroutine?id=defer
+        //用于资源的释放，会在协程关闭之前 (即协程函数执行完毕时) 进行调用，就算抛出了异常，已注册的 defer 也会被执行
+        //自动归还
         defer(
-            function () use ($pool, $connection) {
-                //自动归还
+            function () use ($pool, $connection, $name) {
+                //判断通道是否已满
                 if (!$pool->isFull()) {
-                    $pool->push($connection, 0.001);
+                    //判断最大使用时间
+                    if (time() - $this->connectionCreationTime[$name] < $this->getPoolMaxUseTime($name)) {
+                        //向通道添加连接
+                        $pool->push($connection, 0.001);
+                    } else {
+                        //关闭连接
+                        $this->removeConnection($name, $connection);
+                    }
+                } else {
+                    //关闭连接
+                    $this->removeConnection($name, $connection);
                 }
             }
         );
@@ -101,6 +142,14 @@ trait InteractsWithPool
     abstract protected function createPoolConnection(string $name);
 
     /**
+     * 移除连接
+     * @param string $name
+     * @param $connection
+     * @return mixed
+     */
+    abstract protected function removePoolConnection(string $name, $connection);
+
+    /**
      * 连接池最大活动连接数
      * @param $name
      * @return int
@@ -113,5 +162,12 @@ trait InteractsWithPool
      * @return int
      */
     abstract protected function getPoolMaxWaitTime($name): int;
+
+    /**
+     * 最大活动时间
+     * @param $name
+     * @return int
+     */
+    abstract protected function getPoolMaxUseTime($name): int;
 
 }

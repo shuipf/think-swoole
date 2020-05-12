@@ -97,17 +97,20 @@ trait WithApplication
         if (!$this->app instanceof SwooleApp) {
             //实例化app对象
             $this->app = new SwooleApp($this->container->getRootPath());
+
             //绑定对象
             $this->app->bind(SwooleApp::class, App::class);
             $this->app->bind(Server::class, $this->getServer());
             $this->app->bind("swoole.server", Server::class);
-            //绑定连接池
+
+            //绑定db、cache连接池，单独实现的一套，没走open-smf/connection-pool
             if ($this->getConfig('pool.db.enable', true)) {
                 $this->app->bind('db', Db::class);
             }
             if ($this->getConfig('pool.cache.enable', true)) {
                 $this->app->bind('cache', Cache::class);
             }
+
             //初始化应用
             $this->app->initialize();
             $this->prepareConcretes();
