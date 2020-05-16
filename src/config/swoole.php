@@ -77,11 +77,13 @@ return [
             'enable' => Env::get('pool_db.enable', true),
             'max_active' => Env::get('pool_db.max_active', 10),
             'max_wait_time' => Env::get('pool_db.max_wait_time', 1),
+            'max_use_time' => Env::get('pool_db.max_wait_time', 3600),
         ],
         'cache' => [
             'enable' => Env::get('pool_cache.enable', true),
             'max_active' => Env::get('pool_cache.max_active', 20),
             'max_wait_time' => Env::get('pool_cache.max_wait_time', 1),
+            'max_use_time' => Env::get('pool_cache.max_wait_time', 7200),
         ],
     ],
     //协程
