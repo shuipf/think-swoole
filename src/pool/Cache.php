@@ -2,16 +2,21 @@
 // +----------------------------------------------------------------------
 // | Cache
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019 http://www.shuipf.com, All rights reserved.
+// | Copyright (c) 2020 http://www.shuipf.com, All rights reserved.
 // +----------------------------------------------------------------------
 // | Author: 水平凡 <admin@abc3210.com>
 // +----------------------------------------------------------------------
 
 namespace think\swoole\pool;
 
+use think\cache\Driver;
 use think\swoole\concerns\InteractsWithPool;
 use think\swoole\coroutine\Context;
 
+/**
+ * Class Cache
+ * @package think\swoole\pool
+ */
 class Cache extends \think\Cache
 {
     use InteractsWithPool;
@@ -20,7 +25,7 @@ class Cache extends \think\Cache
      * 获取最大连接数
      * @return int
      */
-    protected function getPoolMaxActive($name): int
+    protected function getPoolMaxActive(): int
     {
         return $this->app->config->get('swoole.pool.cache.max_active', 3);
     }
@@ -29,19 +34,27 @@ class Cache extends \think\Cache
      * 获取最大超时时间
      * @return int
      */
-    protected function getPoolMaxWaitTime($name): int
+    protected function getPoolMaxWaitTime(): int
     {
         return $this->app->config->get('swoole.pool.cache.max_wait_time', 3);
     }
 
     /**
      * 最大活动时间
-     * @param $name
      * @return int
      */
     protected function getPoolMaxUseTime(): int
     {
         return $this->app->config->get('swoole.pool.cache.max_use_time', 7200);
+    }
+
+    /**
+     * 最大空闲时间
+     * @return int
+     */
+    protected function getPoolMaxIdleTime(): int
+    {
+        return $this->app->config->get('swoole.pool.cache.max_idle_time', 20);
     }
 
     /**
@@ -72,11 +85,10 @@ class Cache extends \think\Cache
 
     /**
      * 移除连接
-     * @param string $name
-     * @param $connection
+     * @param Driver $connection
      * @return mixed
      */
-    protected function removePoolConnection(string $name, $connection)
+    protected function removePoolConnection(Driver $connection)
     {
 
     }

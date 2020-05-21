@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | Db
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019 http://www.shuipf.com, All rights reserved.
+// | Copyright (c) 2020 http://www.shuipf.com, All rights reserved.
 // +----------------------------------------------------------------------
 // | Author: 水平凡 <admin@abc3210.com>
 // +----------------------------------------------------------------------
@@ -11,6 +11,7 @@ namespace think\swoole\pool;
 
 use think\Config;
 use think\db\ConnectionInterface;
+use think\db\PDOConnection;
 use think\swoole\concerns\InteractsWithPool;
 use think\swoole\coroutine\Context;
 
@@ -27,7 +28,7 @@ class Db extends \think\Db
      * 获取最大连接数
      * @return int
      */
-    protected function getPoolMaxActive($name): int
+    protected function getPoolMaxActive(): int
     {
         return $this->config->get('swoole.pool.db.max_active', 3);
     }
@@ -36,19 +37,27 @@ class Db extends \think\Db
      * 获取最大超时时间
      * @return int
      */
-    protected function getPoolMaxWaitTime($name): int
+    protected function getPoolMaxWaitTime(): int
     {
         return $this->config->get('swoole.pool.db.max_wait_time', 3);
     }
 
     /**
      * 最大活动时间
-     * @param $name
      * @return int
      */
     protected function getPoolMaxUseTime(): int
     {
         return $this->config->get('swoole.pool.db.max_use_time', 3600);
+    }
+
+    /**
+     * 最大空闲时间
+     * @return int
+     */
+    protected function getPoolMaxIdleTime(): int
+    {
+        return $this->config->get('swoole.pool.db.max_idle_time', 20);
     }
 
     /**
@@ -87,11 +96,10 @@ class Db extends \think\Db
 
     /**
      * 移除连接
-     * @param string $name
-     * @param $connection
+     * @param PDOConnection $connection
      * @return mixed
      */
-    protected function removePoolConnection(string $name, $connection)
+    protected function removePoolConnection(PDOConnection $connection)
     {
         $connection->close();
     }
