@@ -11,6 +11,7 @@ namespace think\swoole\concerns;
 
 use RuntimeException;
 use Swoole\Coroutine\Channel;
+use think\facade\Log;
 use think\helper\Str;
 
 trait InteractsWithPool
@@ -137,6 +138,17 @@ trait InteractsWithPool
                     //连接取出去使用中超时时间，达到该时间后，强制销毁，避免连接无法回收
                     if ($now - $lastActiveTime > 60) {
                         $this->removeConnection($name, $connection);
+                        //日志
+                        Log::record(
+                            [
+                                'tips' => '连接池使用超时',
+                                'number' => $number,
+                                'name' => $name,
+                                'useCount' => isset($this->usePools[$name]) ? count($this->usePools[$name]) : 0,
+                                'connectionCount' => isset($this->connectionCount[$name]) ? $this->connectionCount[$name] : 0,
+                            ],
+                            'error'
+                        );
                     }
                 }
             }
@@ -259,6 +271,21 @@ trait InteractsWithPool
                     $this->removePoolConnection($connection->getConnection());
                 } catch (\Throwable $e) {
                     //忽略此异常.
+                    //日志
+                    Log::record(
+                        [
+                            'tips' => '连接池移除连接失败',
+                            'number' => $connection->getNumber(),
+                            'name' => $name,
+                            'useCount' => isset($this->usePools[$name]) ? count($this->usePools[$name]) : 0,
+                            'connectionCount' => isset($this->connectionCount[$name]) ? $this->connectionCount[$name] : 0,
+                            'code' => $e->getCode(),
+                            'file' => $e->getFile(),
+                            'message' => $e->getMessage(),
+                            'line' => $e->getLine(),
+                        ],
+                        'error'
+                    );
                 }
             }
         );
