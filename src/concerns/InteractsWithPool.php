@@ -11,6 +11,7 @@ namespace think\swoole\concerns;
 
 use RuntimeException;
 use Swoole\Coroutine\Channel;
+use think\helper\Str;
 
 trait InteractsWithPool
 {
@@ -19,6 +20,12 @@ trait InteractsWithPool
      * @var Channel[]
      */
     protected $pools = [];
+
+    /**
+     * 使用中的连接
+     * @var array
+     */
+    protected $usePools = [];
 
     /**
      * 记录连接池当前连接数
@@ -34,7 +41,7 @@ trait InteractsWithPool
 
     /**
      * 获取连接池通道
-     * @param $name
+     * @param string $name
      * @return Channel
      */
     protected function getPool($name)
@@ -64,7 +71,7 @@ trait InteractsWithPool
         if ($pool->isEmpty() && $this->connectionCount[$name] < $this->getPoolMaxActive()) {
             //新建链接
             $this->connectionCount[$name]++;
-            $connection = $this->createPool($this->createPoolConnection($name), $this->connectionCount[$name]);
+            $connection = $this->createPool($this->createPoolConnection($name), Str::random(12));
         } else {
             //从连接池取一个链接
             $connection = $pool->pop($this->getPoolMaxWaitTime());
@@ -80,6 +87,8 @@ trait InteractsWithPool
                 );
             }
         }
+        //记录使用中的连接
+        $this->usePools[$name][$connection->getNumber()] = $connection;
         return $this->wrapProxy($pool, $connection, $name);
     }
 
@@ -121,6 +130,15 @@ trait InteractsWithPool
                         $this->removeConnection($name, $validConnection);
                     }
                 }
+                //检查使用中的连接
+                foreach ($this->usePools[$name] as $number => $connection) {
+                    //最后使用时间
+                    $lastActiveTime = $connection->getConnectionUseTime();
+                    //连接取出去使用中超时时间，达到该时间后，强制销毁，避免连接无法回收
+                    if ($now - $lastActiveTime > 60) {
+                        $this->removeConnection($name, $connection);
+                    }
+                }
             }
         );
     }
@@ -128,18 +146,18 @@ trait InteractsWithPool
     /**
      * 创建连接池连接对象
      * @param object $connection 连接
-     * @param int $number 编号
+     * @param string $number 编号
      * @return __anonymous@4112
      */
-    protected function createPool($connection, $number)
+    protected function createPool($connection, string $number)
     {
         return new class($connection, $number) {
 
             /**
              * 连接编号
-             * @var int
+             * @var string
              */
-            protected $number = 0;
+            protected $number = '';
 
             /**
              * 连接对象
@@ -161,21 +179,21 @@ trait InteractsWithPool
 
             /**
              *  constructor.
-             * @param $connection
-             * @param null $number
+             * @param object $connection
+             * @param null|string $number
              */
-            public function __construct($connection, $number = null)
+            public function __construct($connection, string $number = null)
             {
                 $this->connection = $connection;
-                $this->number = is_null($number) ? time() : $number;
+                $this->number = (string)(is_null($number) ? Str::random(12) : $number);
                 $this->connectionCreationTime = time();
             }
 
             /**
              * 获取连接编号
-             * @return int
+             * @return string
              */
-            public function getNumber(): int
+            public function getNumber(): string
             {
                 return $this->number;
             }
@@ -221,16 +239,23 @@ trait InteractsWithPool
 
     /**
      * 移除连接
-     * @param $name
-     * @param $connection
+     * @param string $name
+     * @param object $connection
      * @return bool
      */
     public function removeConnection($name, $connection): bool
     {
         $this->connectionCount[$name]--;
+        //因为有强制收回，可能出现负数情况
+        if ($this->connectionCount[$name] < 0) {
+            $this->connectionCount[$name] = 0;
+        }
         go(
             function () use ($name, $connection) {
                 try {
+                    //从使用中去除
+                    unset($this->usePools[$name][$connection->getNumber()]);
+                    //回调
                     $this->removePoolConnection($connection->getConnection());
                 } catch (\Throwable $e) {
                     //忽略此异常.
@@ -254,23 +279,24 @@ trait InteractsWithPool
         //自动归还
         defer(
             function () use ($pool, $connection, $name) {
+                $ref = false;
                 //判断通道是否已满
                 if (!$pool->isFull()) {
                     //判断最大使用时间
                     if (time() - $connection->getConnectionCreationTime() < $this->getPoolMaxUseTime()) {
                         //向通道添加连接
-                        $pool->push($connection, 0.001);
-                    } else {
-                        //关闭连接
-                        $this->removeConnection($name, $connection);
+                        $ref = $pool->push($connection, 0.001);
                     }
-                } else {
-                    //关闭连接
+                }
+                //关闭连接
+                if (true !== $ref) {
                     $this->removeConnection($name, $connection);
                 }
             }
         );
-        return $connection->useTime()->getConnection();
+        //使用时间
+        $connection->useTime();
+        return $connection->getConnection();
     }
 
     /**
