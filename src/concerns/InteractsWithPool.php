@@ -10,7 +10,9 @@
 namespace think\swoole\concerns;
 
 use RuntimeException;
+use Swoole\Coroutine;
 use Swoole\Coroutine\Channel;
+use Swoole\Timer;
 use think\facade\Log;
 use think\helper\Str;
 
@@ -100,7 +102,7 @@ trait InteractsWithPool
      */
     protected function startBalanceTimer($name)
     {
-        return swoole_timer_tick(
+        return Timer::tick(
             5 * 1000,
             function () use ($name) {
                 $now = time();
@@ -262,7 +264,7 @@ trait InteractsWithPool
         if ($this->connectionCount[$name] < 0) {
             $this->connectionCount[$name] = 0;
         }
-        go(
+        Coroutine::create(
             function () use ($name, $connection) {
                 try {
                     //从使用中去除
@@ -304,7 +306,7 @@ trait InteractsWithPool
         //手册说明 https://wiki.swoole.com/#/coroutine/coroutine?id=defer
         //用于资源的释放，会在协程关闭之前 (即协程函数执行完毕时) 进行调用，就算抛出了异常，已注册的 defer 也会被执行
         //自动归还
-        defer(
+        Coroutine::defer(
             function () use ($pool, $connection, $name) {
                 $ref = false;
                 //判断通道是否已满

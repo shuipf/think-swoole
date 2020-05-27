@@ -210,7 +210,7 @@ trait InteractsWithServer
                 );
             }, false, 0
         );
-        $this->getServer()->addProcess($process);
+        $this->addProcess($process);
     }
 
     /**

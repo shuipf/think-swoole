@@ -9,6 +9,7 @@
 
 namespace think\swoole;
 
+use Swoole\Timer;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -62,7 +63,7 @@ class FileWatcher
         $this->files = $this->findFiles();
 
         //添加一个定时器监控文件修改情况
-        swoole_timer_tick(
+        Timer::tick(
             1000,
             function () use ($callback) {
 
