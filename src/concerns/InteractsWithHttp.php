@@ -112,14 +112,21 @@ trait InteractsWithHttp
     public function onRequest($req, $res)
     {
         $args = func_get_args();
+        try {
+            $request = $this->prepareRequest($req);
+            $this->triggerEvent('request', $request);
+        } catch (Throwable $e) {
+            $response = $this->app
+                ->make(Handle::class)
+                ->render($request, $e);
+            return $this->sendResponse($res, $response, $this->getSandbox()->getApplication()->app->cookie);
+        }
         $this->runInSandbox(
-            function (Http $http, Event $event, App $app, Middleware $middleware) use ($args, $req, $res) {
-                $event->trigger('swoole.request', $args);
+            function (Http $http, Event $event, App $app, Middleware $middleware) use ($req, $res, $request) {
                 //兼容var-dumper
                 if (class_exists(VarDumper::class)) {
                     $middleware->add(ResetVarDumper::class);
                 }
-                $request = $this->prepareRequest($req);
                 try {
                     $response = $this->handleRequest($http, $request);
                 } catch (Throwable $e) {

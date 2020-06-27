@@ -43,6 +43,7 @@ class Context
     }
 
     /**
+     * 存在获取不存在设置再获取
      * @param string $key
      * @param $value
      * @return mixed|null
