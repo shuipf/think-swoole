@@ -216,6 +216,7 @@ trait InteractsWithHttp
      */
     protected function sendResponse(Response $res, \think\Response $response, Cookie $cookie)
     {
+        $content = $response->getContent();
         //发送Header
         foreach ($response->getHeader() as $key => $val) {
             $res->header($key, $val);
@@ -227,7 +228,6 @@ trait InteractsWithHttp
             [$value, $expire, $option] = $val;
             $res->cookie($name, $value, $expire, $option['path'], $option['domain'], $option['secure'] ? true : false, $option['httponly'] ? true : false);
         }
-        $content = $response->getContent();
         $this->sendByChunk($res, $content);
     }
 
