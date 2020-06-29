@@ -115,28 +115,30 @@ trait InteractsWithHttp
         try {
             $request = $this->prepareRequest($req);
             $this->triggerEvent('request', $request);
+            $this->runInSandbox(
+                function (Http $http, Event $event, App $app, Middleware $middleware) use ($req, $res, $request) {
+                    //兼容var-dumper
+                    if (class_exists(VarDumper::class)) {
+                        $middleware->add(ResetVarDumper::class);
+                    }
+                    try {
+                        $response = $this->handleRequest($http, $request);
+                    } catch (Throwable $e) {
+                        $response = $this->app
+                            ->make(Handle::class)
+                            ->render($request, $e);
+                    }
+                    $this->sendResponse($res, $response, $app->cookie);
+                }
+            );
         } catch (Throwable $e) {
             $response = $this->app
                 ->make(Handle::class)
                 ->render($request, $e);
-            return $this->sendResponse($res, $response, $this->getSandbox()->getApplication()->app->cookie);
+            //沙盒克隆出来的app对象
+            $app = $this->getSandbox()->getApplication()->app;
+            return $this->sendResponse($res, $response, $app->cookie);
         }
-        $this->runInSandbox(
-            function (Http $http, Event $event, App $app, Middleware $middleware) use ($req, $res, $request) {
-                //兼容var-dumper
-                if (class_exists(VarDumper::class)) {
-                    $middleware->add(ResetVarDumper::class);
-                }
-                try {
-                    $response = $this->handleRequest($http, $request);
-                } catch (Throwable $e) {
-                    $response = $this->app
-                        ->make(Handle::class)
-                        ->render($request, $e);
-                }
-                $this->sendResponse($res, $response, $app->cookie);
-            }
-        );
     }
 
     /**
