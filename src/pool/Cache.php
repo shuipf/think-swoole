@@ -9,87 +9,23 @@
 
 namespace think\swoole\pool;
 
-use think\cache\Driver;
-use think\swoole\concerns\InteractsWithPool;
-use think\swoole\coroutine\Context;
+use think\swoole\pool\proxy\Store;
 
-/**
- * Class Cache
- * @package think\swoole\pool
- */
 class Cache extends \think\Cache
 {
-    use InteractsWithPool;
-
     /**
-     * 获取最大连接数
-     * @return int
+     * 创建驱动
+     * @param string $name
+     * @return mixed|Store
      */
-    protected function getPoolMaxActive(): int
+    protected function createDriver(string $name)
     {
-        return $this->app->config->get('swoole.pool.cache.max_active', 3);
-    }
-
-    /**
-     * 获取最大超时时间
-     * @return int
-     */
-    protected function getPoolMaxWaitTime(): int
-    {
-        return $this->app->config->get('swoole.pool.cache.max_wait_time', 3);
-    }
-
-    /**
-     * 最大活动时间
-     * @return int
-     */
-    protected function getPoolMaxUseTime(): int
-    {
-        return $this->app->config->get('swoole.pool.cache.max_use_time', 7200);
-    }
-
-    /**
-     * 最大空闲时间
-     * @return int
-     */
-    protected function getPoolMaxIdleTime(): int
-    {
-        return $this->app->config->get('swoole.pool.cache.max_idle_time', 20);
-    }
-
-    /**
-     * 获取驱动实例
-     * @param null|string $name
-     * @return mixed
-     */
-    protected function driver(string $name = null)
-    {
-        $name = $name ?: $this->getDefaultDriver();
-        return Context::rememberData(
-            "cache.store.{$name}",
+        return new Store(
             function () use ($name) {
-                return $this->getPoolConnection($name);
-            }
+                return parent::createDriver($name);
+            },
+            $this->app->config->get('swoole.pool.cache', [])
         );
     }
 
-    /**
-     * 创建连接池需要的Cache连接对象
-     * @param string $name
-     * @return mixed
-     */
-    protected function createPoolConnection(string $name)
-    {
-        return $this->createDriver($name);
-    }
-
-    /**
-     * 移除连接
-     * @param Driver $connection
-     * @return mixed
-     */
-    protected function removePoolConnection(Driver $connection)
-    {
-
-    }
 }
