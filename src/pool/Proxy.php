@@ -14,6 +14,7 @@ use RuntimeException;
 use Smf\ConnectionPool\ConnectionPool;
 use Smf\ConnectionPool\Connectors\ConnectorInterface;
 use Swoole\Coroutine;
+use Swoole\Event;
 use think\swoole\coroutine\Context;
 use think\swoole\Pool;
 
@@ -71,7 +72,13 @@ abstract class Proxy
                  */
                 public function disconnect($connection)
                 {
-
+                    //在下一个事件循环开始时执行函数
+                    Event::defer(
+                        function () {
+                            //强制回收内存，完成连接释放
+                            gc_collect_cycles();
+                        }
+                    );
                 }
 
                 /**
