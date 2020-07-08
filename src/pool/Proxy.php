@@ -48,7 +48,7 @@ abstract class Proxy
                 protected $creator;
 
                 /**
-                 *  constructor.
+                 * constructor.
                  * @param $creator
                  */
                 public function __construct($creator)
@@ -124,7 +124,7 @@ abstract class Proxy
     protected function getPoolConnection()
     {
         return Context::rememberData(
-            "connection." . static::class,
+            "connection." . spl_object_id($this),
             function () {
                 //从连接池借用连接
                 $connection = $this->pool->borrow();
