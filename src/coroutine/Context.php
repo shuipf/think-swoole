@@ -2,13 +2,14 @@
 // +----------------------------------------------------------------------
 // | Context 协程间的数据传递
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019 http://www.shuipf.com, All rights reserved.
+// | Copyright (c) 2020 http://www.shuipf.com, All rights reserved.
 // +----------------------------------------------------------------------
 // | Author: 水平凡 <admin@abc3210.com>
 // +----------------------------------------------------------------------
 
 namespace think\swoole\coroutine;
 
+use ArrayObject;
 use Closure;
 use Swoole\Coroutine;
 
@@ -16,34 +17,61 @@ class Context
 {
 
     /**
-     * 不同协同环境下的数据
-     * @var array
+     * 获取协程上下文
+     * @param null $cid
+     * @return Coroutine\Context
      */
-    protected static $data = [];
+    public static function get($cid = null)
+    {
+        return Coroutine::getContext($cid);
+    }
 
     /**
-     * 获取协程设置的数据
+     * 数据对象
+     * @return ArrayObject
+     */
+    public static function getDataObject()
+    {
+        $context = self::get();
+        if (!isset($context['data'])) {
+            $context['data'] = new ArrayObject();
+        }
+        return $context['data'];
+    }
+
+    /**
+     * 获取当前协程临时数据
      * @param string $key
      * @param null $default 默认值
      * @return mixed|null
      */
     public static function getData(string $key, $default = null)
     {
-        return static::$data[static::getCoroutineId()][$key] ?? $default;
+        return self::getDataObject()[$key] ?? $default;
     }
 
     /**
-     * 判断数据是否存在
+     * 判断是否存在临时数据
      * @param string $key
      * @return bool
      */
     public static function hasData(string $key)
     {
-        return isset(static::$data[static::getCoroutineId()]) && array_key_exists($key, static::$data[static::getCoroutineId()]);
+        return array_key_exists($key, self::getDataObject());
     }
 
     /**
-     * 存在获取不存在设置再获取
+     * 写入临时数据
+     * @param string $key
+     * @param $value
+     */
+    public static function setData(string $key, $value)
+    {
+        self::getDataObject()[$key] = $value;
+    }
+
+    /**
+     * 如果不存在则写入数据
      * @param string $key
      * @param $value
      * @return mixed|null
@@ -62,41 +90,22 @@ class Context
     }
 
     /**
-     * 设置当前协程中的数据
-     * @param string $key
-     * @param $value
-     */
-    public static function setData(string $key, $value)
-    {
-        static::$data[static::getCoroutineId()][$key] = $value;
-    }
-
-    /**
-     * 移除当前协程中的数据
+     * 删除数据
      * @param string $key
      * @return void
      */
     public static function removeData(string $key)
     {
-        unset(static::$data[static::getCoroutineId()][$key]);
+        unset(self::getDataObject()[$key]);
     }
 
     /**
-     * 获取当前协程数据
-     * @return array
-     */
-    public static function getDataKeys()
-    {
-        return array_keys(static::$data[static::getCoroutineId()] ?? []);
-    }
-
-    /**
-     * 清理数据
+     * 清空数据
      * @return void
      */
     public static function clear()
     {
-        unset(static::$data[static::getCoroutineId()]);
+        self::getDataObject()->exchangeArray([]);
     }
 
     /**
