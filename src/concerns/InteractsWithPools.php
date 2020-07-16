@@ -9,12 +9,14 @@
 
 namespace think\swoole\concerns;
 
+use Exception;
 use Smf\ConnectionPool\ConnectionPool;
 use Smf\ConnectionPool\Connectors\ConnectorInterface;
 use Swoole\Server;
 use think\App;
 use think\helper\Arr;
 use think\swoole\Pool;
+use Throwable;
 
 /**
  * Trait InteractsWithRpc
@@ -53,7 +55,7 @@ trait InteractsWithPools
                 if ($type && is_subclass_of($type, ConnectorInterface::class)) {
                     //实例这个连接池对象
                     $pool = new ConnectionPool(
-                        //连接池配置
+                    //连接池配置
                         Pool::pullPoolConfig($config),
                         //连接器
                         $this->app->make($type),
@@ -68,7 +70,11 @@ trait InteractsWithPools
         };
         $closePools = function () {
             //关闭全部连接池
-            $this->getPools()->closeAll();
+            try {
+                $this->getPools()->closeAll();
+            } catch (Exception | Throwable $e) {
+
+            }
         };
         $this->onEvent('workerStart', $createPools);
         $this->onEvent('workerStop', $closePools);
