@@ -41,11 +41,6 @@ class RpcManager
     protected $container;
 
     /**
-     * @var PidManager
-     */
-    protected $pidManager;
-
-    /**
      * Server events.
      * @var array
      */
@@ -84,10 +79,9 @@ class RpcManager
      * @param App $container
      * @param PidManager $pidManager
      */
-    public function __construct(App $container, PidManager $pidManager)
+    public function __construct(App $container)
     {
         $this->container = $container;
-        $this->pidManager = $pidManager;
     }
 
     /**
