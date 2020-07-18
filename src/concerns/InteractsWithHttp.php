@@ -238,13 +238,11 @@ trait InteractsWithHttp
      */
     protected function sendByChunk(Response $res, $content)
     {
-        $chunkSize = 8192;
-        if (strlen($content) <= $chunkSize) {
-            $res->end($content);
-            return;
-        }
-        foreach (str_split($content, $chunkSize) as $chunk) {
-            $res->write($chunk);
+        if (!empty($content)) {
+            $chunkSize = 8192;
+            foreach (str_split($content, $chunkSize) as $chunk) {
+                $res->write($chunk);
+            }
         }
         $res->end();
     }
