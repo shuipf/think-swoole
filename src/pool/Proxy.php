@@ -76,7 +76,11 @@ abstract class Proxy
                     Event::defer(
                         function () {
                             //强制回收内存，完成连接释放
-                            gc_collect_cycles();
+                            Coroutine::create(
+                                function () {
+                                    gc_collect_cycles();
+                                }
+                            );
                         }
                     );
                 }
