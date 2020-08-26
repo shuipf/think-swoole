@@ -24,7 +24,7 @@ class Client implements ConnectorInterface
         $client = new \Swoole\Coroutine\Client(SWOOLE_SOCK_TCP);
         $host = Arr::pull($config, 'host');
         $port = Arr::pull($config, 'port');
-        $timeout = Arr::pull($config, 'timeout');
+        $timeout = Arr::pull($config, 'timeout', 5);
         $client->set($config);
         $client->connect($host, $port, $timeout);
         return $client;
@@ -47,7 +47,7 @@ class Client implements ConnectorInterface
      */
     public function isConnected($connection): bool
     {
-        return $connection->isConnected();
+        return $connection->isConnected() && $connection->peek() !== '';
     }
 
     /**

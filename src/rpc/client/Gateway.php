@@ -120,7 +120,7 @@ class Gateway
         $client = new $class(SWOOLE_SOCK_TCP);
         $host = Arr::pull($config, 'host');
         $port = Arr::pull($config, 'port');
-        $timeout = Arr::pull($config, 'timeout');
+        $timeout = Arr::pull($config, 'timeout', 5);
         $client->set(
             array_merge(
                 $config,
