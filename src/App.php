@@ -22,4 +22,12 @@ class App extends \think\App
         return Context::hasData('_fd');
     }
 
+    /**
+     * 清理instances应用
+     * @return void
+     */
+    public function clearInstances()
+    {
+        $this->instances = [];
+    }
 }

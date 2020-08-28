@@ -25,6 +25,7 @@ use think\swoole\resetters\ResetConfig;
 use think\swoole\resetters\ResetEvent;
 use think\swoole\resetters\ResetService;
 use Throwable;
+use think\swoole\App as SwooleApp;
 
 class Sandbox
 {
@@ -33,13 +34,13 @@ class Sandbox
 
     /**
      * 不同协程环境中的应用程序容器
-     * @var array
+     * @var SwooleApp[]
      */
     protected $snapshots = [];
 
     /**
      * 应用
-     * @var App
+     * @var SwooleApp
      */
     protected $app;
 
@@ -177,7 +178,7 @@ class Sandbox
 
     /**
      * 获取快照
-     * @return App
+     * @return SwooleApp
      */
     public function getSnapshot()
     {
@@ -202,7 +203,8 @@ class Sandbox
      */
     public function clear($snapshot = true)
     {
-        if ($snapshot) {
+        if ($snapshot && $app = $this->getSnapshot()) {
+            $app->clearInstances();
             unset($this->snapshots[$this->getSnapshotId()]);
         }
         Context::clear();
