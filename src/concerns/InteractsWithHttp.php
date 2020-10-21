@@ -111,34 +111,26 @@ trait InteractsWithHttp
      */
     public function onRequest($req, $res)
     {
+        $this->waitEvent('workerStart');
         $args = func_get_args();
-        try {
-            $request = $this->prepareRequest($req);
-            $this->triggerEvent('request', $request);
-            $this->runInSandbox(
-                function (Http $http, Event $event, App $app, Middleware $middleware) use ($req, $res, $request) {
-                    //兼容var-dumper
-                    if (class_exists(VarDumper::class)) {
-                        $middleware->add(ResetVarDumper::class);
-                    }
-                    try {
-                        $response = $this->handleRequest($http, $request);
-                    } catch (Throwable $e) {
-                        $response = $this->app
-                            ->make(Handle::class)
-                            ->render($request, $e);
-                    }
-                    $this->sendResponse($res, $response, $app->cookie);
+        $this->runInSandbox(
+            function (Http $http, Event $event, App $app, Middleware $middleware) use ($args, $req, $res) {
+                $event->trigger('swoole.request', $args);
+                //兼容var-dumper
+                if (class_exists(VarDumper::class)) {
+                    $middleware->add(ResetVarDumper::class);
                 }
-            );
-        } catch (Throwable $e) {
-            $response = $this->app
-                ->make(Handle::class)
-                ->render($request, $e);
-            //沙盒克隆出来的app对象
-            $app = $this->getSandbox()->getApplication()->app;
-            return $this->sendResponse($res, $response, $app->cookie);
-        }
+                $request = $this->prepareRequest($req);
+                try {
+                    $response = $this->handleRequest($http, $request);
+                } catch (Throwable $e) {
+                    $response = $this->app
+                        ->make(Handle::class)
+                        ->render($request, $e);
+                }
+                $this->sendResponse($res, $response, $app->cookie);
+            }
+        );
     }
 
     /**

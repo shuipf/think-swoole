@@ -13,6 +13,7 @@ use Closure;
 use Swoole\Server;
 use think\App;
 use think\swoole\App as SwooleApp;
+use think\swoole\Coordinator;
 use think\swoole\pool\Cache;
 use think\swoole\pool\Db;
 use think\swoole\Sandbox;
@@ -25,6 +26,22 @@ use Throwable;
  */
 trait WithApplication
 {
+
+    /**
+     * 需要等待协调的事件列表
+     * @var string[]
+     */
+    protected $waitEvents = [
+        'workerStart',
+        'workerExit',
+    ];
+
+    /**
+     * 协调器
+     * @var array
+     */
+    protected $coordinator = [];
+
     /**
      * @var SwooleApp
      */
@@ -39,6 +56,19 @@ trait WithApplication
     public function getConfig(string $name, $default = null)
     {
         return $this->container->config->get("swoole.{$name}", $default);
+    }
+
+    /**
+     * 获取协调器
+     * @param string $name 名称
+     * @return Coordinator
+     */
+    public function getCoordinator(string $name)
+    {
+        if (!isset($this->coordinator[$name])) {
+            $this->coordinator[$name] = new Coordinator();
+        }
+        return $this->coordinator[$name];
     }
 
     /**
@@ -77,6 +107,17 @@ trait WithApplication
     }
 
     /**
+     * 等待事件
+     * @param string $event
+     * @param int $timeout
+     * @return bool
+     */
+    protected function waitEvent(string $event, $timeout = -1): bool
+    {
+        return $this->getCoordinator($event)->yield($timeout);
+    }
+
+    /**
      * 触发事件
      * @param $event
      * @param $params
@@ -84,6 +125,9 @@ trait WithApplication
     protected function triggerEvent(string $event, $params = null): void
     {
         $this->container->event->trigger("swoole.{$event}", $params);
+        if (in_array($event, $this->waitEvents)) {
+            $this->getCoordinator($event)->resume();
+        }
     }
 
     /**

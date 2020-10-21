@@ -221,6 +221,7 @@ class RpcManager
      */
     public function onReceive(Server $server, $fd, $reactorId, $data)
     {
+        $this->waitEvent('workerStart');
         $this->recv(
             $server,
             $fd,
