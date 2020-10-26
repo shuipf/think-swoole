@@ -37,12 +37,6 @@ trait WithApplication
     ];
 
     /**
-     * 协调器
-     * @var array
-     */
-    protected $coordinator = [];
-
-    /**
      * @var SwooleApp
      */
     protected $app;
@@ -65,10 +59,16 @@ trait WithApplication
      */
     public function getCoordinator(string $name)
     {
-        if (!isset($this->coordinator[$name])) {
-            $this->coordinator[$name] = new Coordinator();
+        $abstract = "coordinator.{$name}";
+        if (!$this->container->has($abstract)) {
+            $this->container->bind(
+                $abstract,
+                function () {
+                    return new Coordinator();
+                }
+            );
         }
-        return $this->coordinator[$name];
+        return $this->container->make($abstract);
     }
 
     /**
