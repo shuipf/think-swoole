@@ -13,6 +13,13 @@ use Swoole\Table as SwooleTable;
 
 class Table
 {
+
+    public const TYPE_INT = 1;
+
+    public const TYPE_STRING = 3;
+
+    public const TYPE_FLOAT = 2;
+
     /**
      * 已注册的swoole表
      * @var array
