@@ -9,6 +9,7 @@
 
 namespace think\swoole;
 
+use Exception;
 use Swoole\Coroutine;
 use Swoole\Server;
 use Swoole\Server\Port;
@@ -21,6 +22,7 @@ use think\swoole\concerns\InteractsWithServer;
 use think\swoole\concerns\InteractsWithSwooleTable;
 use think\swoole\concerns\WithApplication;
 use think\swoole\contract\rpc\ParserInterface;
+use think\swoole\rpc\Error;
 use think\swoole\rpc\JsonParser;
 use think\swoole\rpc\Packer;
 use think\swoole\rpc\server\Channel;
@@ -194,11 +196,12 @@ class RpcManager
             //解析包头
             try {
                 [$header, $data] = Packer::unpack($data);
-            } catch (Throwable $e) {
+                $this->channels[$fd] = new Channel($header);
+            } catch (Throwable | Exception $e) {
                 //错误的包头
+                Coroutine::create($callback, Error::make(Dispatcher::INTERNAL_ERROR, $e->getMessage()));
                 return $server->close($fd);
             }
-            $this->channels[$fd] = new Channel($header);
             $handle = $this->channels[$fd]->pop();
         }
         $result = $handle->write($data);
@@ -223,16 +226,13 @@ class RpcManager
     {
         $this->waitEvent('workerStart');
         $this->recv(
-            $server,
-            $fd,
-            $data,
-            function ($data) use ($fd, $server) {
+            $server, $fd, $data,
+            function ($data) use ($fd) {
                 $this->runInSandbox(
                     function (Dispatcher $dispatcher) use ($fd, $data) {
                         $dispatcher->dispatch($fd, $data);
                     },
-                    $fd,
-                    true
+                    $fd, true
                 );
             }
         );

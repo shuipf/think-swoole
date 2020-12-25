@@ -9,6 +9,7 @@
 
 namespace think\swoole\rpc\server;
 
+use RuntimeException;
 use Swoole\Coroutine;
 use think\swoole\rpc\Packer;
 use think\swoole\rpc\server\channel\Buffer;
@@ -32,24 +33,24 @@ class Channel
      */
     public function __construct($header)
     {
+        switch ($header['type']) {
+            case Packer::TYPE_BUFFER:
+                $type = Buffer::class;
+                break;
+            case Packer::TYPE_FILE:
+                $type = File::class;
+                break;
+            default:
+                throw new RuntimeException("不支持的数据类型:[{$header['type']}");
+        }
+
         $this->header = $header;
         $this->queue = new Coroutine\Channel(1);
-        Coroutine::create(
-            function () use ($header) {
-                switch ($header['type']) {
-                    case Packer::TYPE_BUFFER:
-                        $type = Buffer::class;
-                        break;
-                    case Packer::TYPE_FILE:
-                        $type = File::class;
-                        break;
-                    default:
-                        throw new \RuntimeException('not support data type');
-                }
-                $handle = new $type($header['length']);
-                $this->queue->push($handle);
-            }
-        );
+
+        Coroutine::create(function () use ($type, $header) {
+            $handle = new $type($header['length']);
+            $this->queue->push($handle);
+        });
     }
 
     /**
