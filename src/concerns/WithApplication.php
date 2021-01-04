@@ -150,6 +150,12 @@ trait WithApplication
             //绑定db、cache连接池，单独实现的一套，没走open-smf/connection-pool
             if ($this->getConfig('pool.db.enable', true)) {
                 $this->app->bind('db', Db::class);
+                $this->app->resolving(
+                    Db::class,
+                    function (Db $db) {
+                        $db->setLog($this->container->log);
+                    }
+                );
             }
             if ($this->getConfig('pool.cache.enable', true)) {
                 $this->app->bind('cache', Cache::class);
