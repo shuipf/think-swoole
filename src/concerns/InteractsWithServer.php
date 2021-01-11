@@ -95,17 +95,25 @@ trait InteractsWithServer
      */
     public function onWorkerStart($server)
     {
-        //是否开启一键协程
-        Runtime::enableCoroutine($this->getConfig('coroutine.enable', true), $this->getConfig('coroutine.flags', SWOOLE_HOOK_ALL));
+        $this->resumeCoordinator(
+            'workerStart',
+            function () use ($server) {
 
-        //清除apc、op缓存
-        $this->clearCache();
+                //一键协程
+                Runtime::enableCoroutine(
+                    $this->getConfig('coroutine.enable', true),
+                    $this->getConfig('coroutine.flags', SWOOLE_HOOK_ALL)
+                );
 
-        $this->setProcessName($server->taskworker ? 'task process' : 'worker process');
+                $this->clearCache();
 
-        $this->prepareApplication();
+                $this->setProcessName($server->taskworker ? 'task process' : 'worker process');
 
-        $this->triggerEvent("workerStart", $this->app);
+                $this->prepareApplication();
+
+                $this->triggerEvent("workerStart", $this->app);
+            }
+        );
     }
 
     /**
@@ -204,7 +212,10 @@ trait InteractsWithServer
                         $this->getServer()->reload();
                     }
                 );
-            }, false, 0
+            },
+            false,
+            0,
+            true
         );
         $this->addProcess($process);
     }

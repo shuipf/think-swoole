@@ -217,6 +217,7 @@ class RpcManager
     }
 
     /**
+     * 接收事件
      * @param Server $server
      * @param $fd
      * @param $reactorId
@@ -224,7 +225,7 @@ class RpcManager
      */
     public function onReceive(Server $server, $fd, $reactorId, $data)
     {
-        $this->waitEvent('workerStart');
+        $this->waitCoordinator('workerStart');
         $this->recv(
             $server, $fd, $data,
             function ($data) use ($fd) {
