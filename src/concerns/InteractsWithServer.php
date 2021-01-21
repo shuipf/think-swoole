@@ -20,6 +20,7 @@ use think\Event;
 use think\exception\Handle;
 use think\helper\Str;
 use think\swoole\FileWatcher;
+use think\swoole\Job;
 use Throwable;
 
 /**
@@ -119,7 +120,6 @@ trait InteractsWithServer
     /**
      * Set onTask listener.
      * 在 task 进程内被调用
-     * 在 task 进程内被调用
      * worker 进程可以使用 task 函数向 task_worker 进程投递新的任务
      * 当前的 Task 进程在调用 onTask 回调函数时会将进程状态切换为忙碌，这时将不再接收新的 Task，当 onTask 函数返回时会将进程状态切换为空闲然后继续接收新的 Task
      * @param mixed $server
@@ -129,10 +129,20 @@ trait InteractsWithServer
     public function onTask($server, Task $task)
     {
         $this->runInSandbox(
-            function (Event $event) use ($task) {
-                $event->trigger('swoole.task', $task);
-            },
-            $task->id
+            function (Event $event, App $app) use ($task) {
+                //如果是内置Job对象
+                if ($task->data instanceof Job) {
+                    if (is_array($task->data->name)) {
+                        [$class, $method] = $task->data->name;
+                        $object = $app->invokeClass($class, $task->data->params);
+                        $object->{$method}();
+                    } else {
+                        $app->invoke($task->data->name, $task->data->params);
+                    }
+                } else {
+                    $event->trigger('swoole.task', $task);
+                }
+            }, $task->id
         );
     }
 
