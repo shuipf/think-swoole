@@ -13,6 +13,8 @@ use InvalidArgumentException;
 use Nette\PhpGenerator\Factory;
 use Nette\PhpGenerator\PhpNamespace;
 use ReflectionClass;
+use think\App;
+use think\swoole\Middleware;
 use think\swoole\rpc\Protocol;
 
 abstract class Proxy
@@ -29,9 +31,27 @@ abstract class Proxy
      */
     protected $gateway;
 
-    final public function __construct(Gateway $gateway)
+    /**
+     * @var App
+     */
+    protected $app;
+
+    /**
+     * @var array
+     */
+    protected $middleware = [];
+
+    /**
+     * Proxy constructor.
+     * @param App $app
+     * @param Gateway $gateway
+     * @param $middleware
+     */
+    final public function __construct(App $app, Gateway $gateway, $middleware)
     {
+        $this->app = $app;
         $this->gateway = $gateway;
+        $this->middleware = $middleware;
     }
 
     /**
@@ -44,7 +64,15 @@ abstract class Proxy
     final protected function proxyCall($method, $params)
     {
         $protocol = Protocol::make($this->interface, $method, $params);
-        return $this->gateway->sendAndRecv($protocol);
+        //执行rpc中间件
+        return Middleware::make($this->app, $this->middleware)
+            ->pipeline()
+            ->send($protocol)
+            ->then(
+                function (Protocol $protocol) {
+                    return $this->gateway->sendAndRecv($protocol);
+                }
+            );
     }
 
     /**

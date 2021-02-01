@@ -11,6 +11,7 @@ namespace think\swoole\rpc;
 
 use Exception;
 use think\swoole\contract\rpc\ParserInterface;
+use think\swoole\rpc\server\Dispatcher;
 
 class JsonParser implements ParserInterface
 {
@@ -39,12 +40,11 @@ class JsonParser implements ParserInterface
             'jsonrpc' => self::VERSION,
             'method' => $method,
             'params' => $protocol->getParams(),
+            'context' => $protocol->getContext(),
             'id' => '',
         ];
 
-        $string = json_encode($data, JSON_UNESCAPED_UNICODE);
-
-        return $string;
+        return json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -60,23 +60,28 @@ class JsonParser implements ParserInterface
         $error = json_last_error();
         if ($error != JSON_ERROR_NONE) {
             throw new Exception(
-                sprintf('Data(%s) is not json format!', $string)
+                sprintf('Data(%s) is not json format!', $string),
+                Dispatcher::PARSER_ERROR
             );
         }
 
         $method = $data['method'] ?? '';
         $params = $data['params'] ?? [];
+        $context = $data['context'] ?? [];
+
 
         if (empty($method)) {
             throw new Exception(
-                sprintf('Method(%s) cant not be empty!', $string)
+                sprintf('Method(%s) cant not be empty!', $string),
+                Dispatcher::INVALID_PARAMS
             );
         }
 
         $methodAry = explode(self::DELIMITER, $method);
         if (count($methodAry) < 2) {
             throw new Exception(
-                sprintf('Method(%s) is bad format!', $method)
+                sprintf('Method(%s) is bad format!', $method),
+                Dispatcher::INVALID_PARAMS
             );
         }
 
@@ -84,11 +89,12 @@ class JsonParser implements ParserInterface
 
         if (empty($interfaceClass) || empty($methodName)) {
             throw new Exception(
-                sprintf('Interface(%s) or Method(%s) can not be empty!', $interfaceClass, $method)
+                sprintf('Interface(%s) or Method(%s) can not be empty!', $interfaceClass, $method),
+                Dispatcher::INVALID_PARAMS
             );
         }
 
-        return Protocol::make($interfaceClass, $methodName, $params);
+        return Protocol::make($interfaceClass, $methodName, $params, $context);
     }
 
     /**
@@ -120,6 +126,7 @@ class JsonParser implements ParserInterface
     {
         $data = [
             'jsonrpc' => self::VERSION,
+            'id' => '',
         ];
 
         if ($result instanceof Error) {
@@ -128,8 +135,6 @@ class JsonParser implements ParserInterface
             $data['result'] = $result;
         }
 
-        $string = json_encode($data);
-
-        return $string;
+        return json_encode($data);
     }
 }

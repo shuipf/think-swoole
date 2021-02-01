@@ -9,7 +9,6 @@
 
 namespace think\swoole;
 
-use Exception;
 use Swoole\Coroutine;
 use Swoole\Server;
 use Swoole\Server\Port;
@@ -154,7 +153,8 @@ class RpcManager
     protected function bindRpcDispatcher()
     {
         $services = $this->getConfig('rpc.server.services', []);
-        $this->app->make(Dispatcher::class, [$services]);
+        $middleware = $this->getConfig('rpc.server.middleware', []);
+        $this->app->make(Dispatcher::class, [$services, $middleware]);
     }
 
     /**
@@ -197,9 +197,9 @@ class RpcManager
             try {
                 [$header, $data] = Packer::unpack($data);
                 $this->channels[$fd] = new Channel($header);
-            } catch (Throwable | Exception $e) {
+            } catch (Throwable $e) {
                 //错误的包头
-                Coroutine::create($callback, Error::make(Dispatcher::INTERNAL_ERROR, $e->getMessage()));
+                Coroutine::create($callback, Error::make(Dispatcher::INVALID_REQUEST, $e->getMessage()));
                 return $server->close($fd);
             }
             $handle = $this->channels[$fd]->pop();

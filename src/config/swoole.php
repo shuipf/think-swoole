@@ -65,6 +65,7 @@ return [
             'enable' => Env::get('rpc.enable', false),
             'host' => Env::get('rpc.host', ''),
             'port' => Env::get('rpc.port', 9090),
+            'middleware' => [],
             'services' => [
             ],
         ],

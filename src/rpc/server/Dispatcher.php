@@ -9,14 +9,15 @@
 
 namespace think\swoole\rpc\server;
 
-use Exception;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 use ReflectionNamedType;
 use RuntimeException;
 use Swoole\Server;
 use think\App;
 use think\swoole\contract\rpc\ParserInterface;
+use think\swoole\Middleware;
 use think\swoole\rpc\Error;
 use think\swoole\rpc\File;
 use think\swoole\rpc\Packer;
@@ -79,6 +80,11 @@ class Dispatcher
     protected $files = [];
 
     /**
+     * @var array|mixed
+     */
+    protected $middleware = [];
+
+    /**
      * Dispatcher constructor.
      * @param App $app
      * @param ParserInterface $parser
@@ -86,12 +92,13 @@ class Dispatcher
      * @param $services
      * @throws \ReflectionException
      */
-    public function __construct(App $app, ParserInterface $parser, Server $server, $services)
+    public function __construct(App $app, ParserInterface $parser, Server $server, $services, $middleware = [])
     {
         $this->app = $app;
         $this->parser = $parser;
         $this->server = $server;
         $this->prepareServices($services);
+        $this->middleware = $middleware;
     }
 
     /**
@@ -103,17 +110,44 @@ class Dispatcher
     {
         try {
             switch (true) {
+                //文件
                 case $data instanceof File:
                     $this->files[$fd][] = $data;
                     return;
+                //错误信息
                 case $data instanceof Error:
                     $result = $data;
                     break;
+                //获取接口信息，用于rpc.php文件生成
                 case $data === Protocol::ACTION_INTERFACE:
                     $result = $this->getInterfaces();
                     break;
                 default:
                     $protocol = $this->parser->decode($data);
+                    $result = $this->dispatchWithMiddleware($protocol, $fd);
+            }
+        } catch (Throwable $e) {
+            $result = Error::make($e->getCode(), $e->getMessage());
+        }
+        $data = $this->parser->encodeResponse($result);
+        $this->server->send($fd, Packer::pack($data));
+        //清空文件缓存
+        unset($this->files[$fd]);
+    }
+
+    /**
+     * 中间件调度
+     * @param Protocol $protocol
+     * @param $fd
+     * @return mixed
+     */
+    protected function dispatchWithMiddleware(Protocol $protocol, $fd)
+    {
+        return Middleware::make($this->app, $this->middleware)
+            ->pipeline()
+            ->send($protocol)
+            ->then(
+                function (Protocol $protocol) use ($fd) {
                     $interface = $protocol->getInterface();
                     $method = $protocol->getMethod();
                     $params = $protocol->getParams();
@@ -127,31 +161,24 @@ class Dispatcher
                     if (empty($service)) {
                         throw new RuntimeException(
                             sprintf('Service %s is not founded!', $interface),
-                            self::INVALID_REQUEST
+                            self::METHOD_NOT_FOUND
                         );
                     }
-                    $result = $this->app->invoke([$this->app->make($service['class']), $method], $params);
-            }
-        } catch (Throwable | Exception $e) {
-            $result = Error::make($e->getCode(), $e->getMessage());
-        }
-        $data = $this->parser->encodeResponse($result);
-        $this->server->send($fd, Packer::pack($data));
-        //清空文件缓存
-        unset($this->files[$fd]);
+                    return $this->app->invoke([$this->app->make($service['class']), $method], $params);
+                }
+            );
     }
 
     /**
      * 获取服务接口
      * @param $services
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function prepareServices($services)
     {
         foreach ($services as $className) {
             $reflectionClass = new ReflectionClass($className);
             $interfaces = $reflectionClass->getInterfaceNames();
-
             foreach ($interfaces as $interface) {
                 $this->services[class_basename($interface)] = [
                     'interface' => $interface,
@@ -217,11 +244,9 @@ class Dispatcher
                 'name' => $parameter->getName(),
                 'type' => $type,
             ];
-
             if ($parameter->isOptional()) {
                 $param['default'] = $parameter->getDefaultValue();
             }
-
             $parameters[] = $param;
         }
         return $parameters;

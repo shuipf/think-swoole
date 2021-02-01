@@ -66,7 +66,7 @@ class Gateway
                 $params[$index] = Protocol::FILE;
             }
         }
-        $protocol = Protocol::make($protocol->getInterface(), $protocol->getMethod(), $params);
+        $protocol->setParams($params);
         $data = $this->parser->encode($protocol);
         yield Packer::pack($data);
     }
